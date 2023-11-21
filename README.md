@@ -31,31 +31,33 @@ In this challenge, you will write the logic for [THIS APP](https://advanced-apps
 
 The endpoints needed for this project are the following:
 
-- `[POST] http://localhost:9000/api/login`
-  - Expects a payload with the following properties: `username`, `password`
-  - Example of payload: `{ "username": "foo", "password": "12345678" }`
-  - The `username` length must be >= 3, and the `password` >= 8, after trimming
-  - The response to a proper request includes `200 OK` and the auth token
-- `[GET] http://localhost:9000/api/articles`
-  - Expects an `Authorization` request header containing a valid auth token
-  - The response to a proper request includes `200 OK` and a list of articles which could be empty
-- `[POST] http://localhost:9000/api/articles`
-  - Expects an `Authorization` request header containing a valid auth token
-  - Expects a payload with the following properties: `title`, `text`, `topic`
-  - The `title` and `text` length must be >= 1, after trimming
-  - The `topic` needs to be one of three values: `React`, `JavaScript`, `Node`
-  - Example of payload: `{ "title": "foo", "text": "bar", "topic": "React" }`
-  - The response to a proper request includes `201 Created`, a success message and the new article
-- `[PUT] http://localhost:9000/api/articles/:article_id`
-  - Expects an `Authorization` request header containing a valid auth token
-  - Expects a payload with the following properties: `title`, `text`, `topic`
-  - The `title` and `text` length must be >= 1, after trimming
-  - The `topic` needs to be one of three values: `React`, `JavaScript`, `Node`
-  - Example of payload: `{ "title": "foo", "text": "bar", "topic": "React" }`
-  - The response to a proper request includes `200 OK`, a success message and the updated article
-- `[DELETE] http://localhost:9000/api/articles/:article_id`
-  - Expects an `Authorization` request header containing a valid auth token
-  - The response to a proper request includes `200 OK` and a success message
+**LOGIN:** `[POST] http://localhost:9000/api/login`
+  - Expects a payload with: `username`, `password`
+    - ex: `{ "username": "foo", "password": "12345678" }`
+    - `username` length must be >= 3, after trimming
+    - `password` length must be >= 8, after trimming
+  - Catch response includes `200 OK` & auth token
+**ARTICLES:** `[GET] http://localhost:9000/api/articles`
+  - Expects an `Authorization` request header with an auth token
+  - Catch response includes `200 OK` and a list of articles
+    - list could be empty
+**ADD ARTICLE:** `[POST] http://localhost:9000/api/articles`
+  - Expects an `Authorization` request header with an auth token
+  - Expects a payload with: `title`, `text`, `topic`
+    - ex: `{ "title": "foo", "text": "bar", "topic": "React" }`
+    - `title` & `text` length must be >= 1, after trimming
+    - `topic` must be one of: `React`, `JavaScript`, or `Node`
+  - Catch response includes `201 Created`, success message, & new article
+**EDIT ARTICLE:** `[PUT] http://localhost:9000/api/articles/:article_id`
+  - Expects an `Authorization` request header with an auth token
+  - Expects a payload with: `title`, `text`, `topic`
+    - ex: `{ "title": "foo", "text": "bar", "topic": "React" }`
+    - `title` & `text` length must be >= 1, after trimming
+    - `topic` must be one of: `React`, `JavaScript`, or `Node`
+  - Catch response includes `200 OK`, success message, & updated article
+**DELETE ARTICLE:** `[DELETE] http://localhost:9000/api/articles/:article_id`
+  - Expects an `Authorization` request header with an auth token
+  - Catch response includes `200 OK` & success message
 
 ❗ Test drive all these endpoints with [Postman](https://www.postman.com/downloads/) before starting with the project.
 
