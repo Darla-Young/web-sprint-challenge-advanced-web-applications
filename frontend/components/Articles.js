@@ -12,26 +12,21 @@ export default function Articles(props) {
    setCurrentArticle,
   } = props
 
+
   useEffect(() => {
-   if (!localStorage.getItem('token')) {
-    navigate('/')
-   } else {
-    getArticles()
-   }
-  },[])
+    !localStorage.getItem('token') 
+    ? navigate('/')
+    : getArticles()
+  }, [])
 
   const toEdit = evt => {
-    setCurrentArticle({
-      article_id: evt.target.id,
-      title: evt.target.title,
-      text: evt.target.text,
-      topic: evt.target.topic,
-    })
+    const id = parseInt(evt.target.parentNode.parentNode.id)
+    setCurrentArticle(articles.filter(a => a.article_id === id)[0])
   }
 
   const toDelete = evt => {
-    deleteArticle(evt.target.id)
-    getArticles()
+   const id = parseInt(evt.target.parentNode.parentNode.id)
+    deleteArticle(id)
   }
 
   return (
@@ -42,7 +37,7 @@ export default function Articles(props) {
           ? 'No articles yet'
           : articles.map(art => {
             return (
-              <div className="article" key={art.article_id}>
+              <div className="article" key={art.article_id} id={art.article_id}>
                 <div>
                   <h3>{art.title}</h3>
                   <p>{art.text}</p>
@@ -70,6 +65,11 @@ Articles.propTypes = {
   })).isRequired,
   getArticles: PT.func.isRequired,
   deleteArticle: PT.func.isRequired,
-  currentArticle: PT.number, // can be undefined or null
+  currentArticle: PT.shape({
+   article_id: PT.number,
+   title: PT.string,
+   text: PT.string,
+   topic: PT.string,
+  }), // can be undefined or null
   setCurrentArticle: PT.func.isRequired,
 }

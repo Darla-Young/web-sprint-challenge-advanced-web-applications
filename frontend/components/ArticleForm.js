@@ -14,11 +14,7 @@ export default function ArticleForm(props) {
 
   useEffect(() => {
    currentArticle ? 
-     setValues({
-      title: currentArticle.title,
-      text: currentArticle.text,
-      topic: currentArticle.topic,
-     })
+     setValues(currentArticle)
      : setValues(initialFormValues)
   },[currentArticle])
 
@@ -30,10 +26,13 @@ export default function ArticleForm(props) {
   const onSubmit = evt => {
     evt.preventDefault()
     if (currentArticle) {
-     updateArticle(currentArticle.article_id, values)
+     const id = currentArticle.article_id
+     updateArticle({article_id: id, article: values})
      setCurrentArticle()
+     setValues(initialFormValues)
     } else {
      postArticle(values)
+     setValues(initialFormValues)
     }
   }
 

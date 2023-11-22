@@ -36,10 +36,9 @@ export default function App() {
     .post(loginUrl, { "username": username, "password": password })
     .then(res => {
      setSpinnerOn(false)
-     console.log(res)
-     // localStorage.setItem('token', res.data.token)
-     // setMessage(res.data.message)
-     // redirectToArticles()
+     localStorage.setItem('token', res.data.token)
+     setMessage(res.data.message)
+     redirectToArticles()
     })
     .catch(err => {
      setSpinnerOn(false)
@@ -50,78 +49,76 @@ export default function App() {
   const getArticles = () => {
    setMessage('')
    setSpinnerOn(true)
-   axiosWithAuth
+   axiosWithAuth()
     .get(articlesUrl)
     .then(res => {
      setSpinnerOn(false)
-     console.log(res)
-     // setArticles(res.data)
-     // setMessage(res.message)
+     setMessage(res.data.message)
+     setArticles(res.data.articles)
     })
     .catch(err => {
      setSpinnerOn(false)
-     console.log(err)
-     // err.type === "401" ? redirectToLogin : console.log(err)
+     err.response.status === 401 ? redirectToLogin() : console.log(err)
     })
   }
 
   const postArticle = article => {
    setMessage('')
    setSpinnerOn(true)
-   axiosWithAuth
+   axiosWithAuth()
     .post(articlesUrl, article)
     .then(res => {
-     setSpinnerOn(false)
      console.log(res)
-     // setArticles(res.data)
-     // setMessage(res.message)
+     setSpinnerOn(false)
+     setMessage(res.data.message)
+     articles.push(res.data.article)
     })
     .catch(err => {
      setSpinnerOn(false)
-     console.log(err)
-     // err.type === "401" ? redirectToLogin : console.log(err)
+     err.response.status === 401 ? redirectToLogin() : console.log(err)
     })
   }
 
   const updateArticle = ({ article_id, article }) => {
+   const id = parseInt(article_id)
+   const index = articles.indexOf(articles.filter(a => a.article_id === id)[0])
    setMessage('')
    setSpinnerOn(true)
-   axiosWithAuth
-    .put(articlesUrl/article_id, article)
+   axiosWithAuth()
+    .put(`${articlesUrl}/${id}`, article)
     .then(res => {
-     setSpinnerOn(false)
-     console.log(res)
-     // setArticles(res.data)
-     // setMessage(res.message)
+      setSpinnerOn(false)
+      setMessage(res.data.message)
+      delete articles[index]
+      articles.push(article)
     })
     .catch(err => {
-     setSpinnerOn(false)
-     console.log(err)
-     // err.type === "401" ? redirectToLogin : console.log(err)
+      setSpinnerOn(false)
+      err.response.status === 401 ? redirectToLogin() : console.log(err)
     })
   }
 
   const deleteArticle = article_id => {
+   const id = parseInt(article_id)
+   const index = articles.indexOf(articles.filter(a => a.article_id === id)[0])
    setMessage('')
    setSpinnerOn(true)
-   axiosWithAuth
-    .delete(articlesUrl/article_id)
+   axiosWithAuth()
+    .delete(`${articlesUrl}/${id}`)
     .then(res => {
      setSpinnerOn(false)
-     console.log(res)
-     // setArticles(res.data)
-     // setMessage(res.message)
+     setMessage(res.data.message)
+     delete articles[index]
     })
     .catch(err => {
      setSpinnerOn(false)
-     console.log(err)
-     // err.type === "401" ? redirectToLogin : console.log(err)
+     err.response.status === 401 ? redirectToLogin() : console.log(err)
     })
   }
 
   return (
     <>
-      <Spinner spinnerOn={spinnerOn} />
+      <Spinner on={spinnerOn} />
       <Message message={message} />
       <button id="logout" onClick={logout}>Logout from app</button>
       <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}>

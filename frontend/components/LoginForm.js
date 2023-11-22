@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PT from 'prop-types'
 
 const initialFormValues = {
@@ -7,7 +7,14 @@ const initialFormValues = {
 }
 export default function LoginForm(props) {
   const [values, setValues] = useState(initialFormValues)
+  const [disabled, setDisabled] = useState(true)
   const { login } = props
+
+  useEffect(() => {
+    const nameLength = values.username.trim().length
+    const passLength = values.password.trim().length
+    if((nameLength >= 3) && (passLength >= 8)){setDisabled(false)}
+  },[values])
 
   const onChange = evt => {
     const { id, value } = evt.target
@@ -17,12 +24,6 @@ export default function LoginForm(props) {
   const onSubmit = evt => {
     evt.preventDefault()
     login(values)
-  }
-
-  const isDisabled = () => {
-   (values.username.trim().length >= 3) && (values.password.trim().length >= 8)
-   ? false
-   : true
   }
 
   return (
@@ -42,7 +43,7 @@ export default function LoginForm(props) {
         placeholder="Enter password"
         id="password"
       />
-      <button disabled={isDisabled()} id="submitCredentials">Submit credentials</button>
+      <button disabled={disabled} id="submitCredentials">Submit credentials</button>
     </form>
   )
 }
