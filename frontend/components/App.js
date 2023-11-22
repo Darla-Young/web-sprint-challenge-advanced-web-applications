@@ -15,7 +15,6 @@ export default function App() {
   // ✨ MVP can be achieved with these states
   const [message, setMessage] = useState('')
   const [articles, setArticles] = useState([])
-  const [currentArticleId, setCurrentArticleId] = useState()
   const [currentArticle, setCurrentArticle] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
 
@@ -138,7 +137,6 @@ export default function App() {
               <ArticleForm 
                 postArticle={postArticle} 
                 updateArticle={updateArticle}
-                currentArticleId={currentArticleId}
                 currentArticle={currentArticle}
                 setCurrentArticle={setCurrentArticle}
               />
@@ -146,9 +144,8 @@ export default function App() {
                 articles={articles} 
                 getArticles={getArticles} 
                 deleteArticle={deleteArticle}
-                setCurrentArticleId={setCurrentArticleId}
-                currentArticleId={currentArticleId}
                 setCurrentArticle={setCurrentArticle}
+                currentArticle={currentArticle}
               />
             </>
           } />

@@ -6,11 +6,10 @@ const initialFormValues = { title: '', text: '', topic: '' }
 export default function ArticleForm(props) {
   const [values, setValues] = useState(initialFormValues)
   const { 
-   postArticle, 
-   updateArticle, 
-   currentArticleId, 
+   postArticle,
+   updateArticle,
    currentArticle,
-   setCurrentArticleId,
+   setCurrentArticle,
   } = props
 
   useEffect(() => {
@@ -31,16 +30,16 @@ export default function ArticleForm(props) {
   const onSubmit = evt => {
     evt.preventDefault()
     if (currentArticle) {
-     updateArticle()
-     setCurrentArticleId()
+     updateArticle(currentArticle.article_id, values)
      setCurrentArticle()
     } else {
-     postArticle()
+     postArticle(values)
     }
   }
 
-  const isDisabled = () => {
-   values.text && values.title && values.topic ? false : true
+  const onCancel = () => {
+   setCurrentArticle()
+   setValues(initialFormValues)
   }
 
   return (
@@ -67,8 +66,8 @@ export default function ArticleForm(props) {
         <option value="Node">Node</option>
       </select>
       <div className="button-group">
-        <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={Function.prototype}>Cancel edit</button>
+        <button disabled={values.text && values.title && values.topic ? false : true} id="submitArticle">Submit</button>
+        <button onClick={onCancel}>Cancel edit</button>
       </div>
     </form>
   )
@@ -78,8 +77,6 @@ export default function ArticleForm(props) {
 ArticleForm.propTypes = {
   postArticle: PT.func.isRequired,
   updateArticle: PT.func.isRequired,
-  setCurrentArticleId: PT.func.isRequired,
-  currentArticleId: PT.number,  // can be undefined or null
   setCurrentArticle: PT.func.isRequired,
   currentArticle: PT.shape({ // can be null or undefined, meaning "create" mode (as opposed to "update")
     article_id: PT.number.isRequired,
